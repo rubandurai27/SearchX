@@ -47,6 +47,7 @@ DRIVE_NAMES = []
 DRIVE_IDS = []
 INDEX_URLS = []
 TELEGRAPH = []
+BOOKMARKS = {}
 
 download_dict_lock = Lock()
 status_reply_dict_lock = Lock()
@@ -151,12 +152,6 @@ if len(DRIVE_LIST_URL) != 0:
     except Exception as err:
         LOGGER.error(f"DRIVE_LIST_URL: {err}")
 
-APPDRIVE_EMAIL = os.environ.get('APPDRIVE_EMAIL', '')
-APPDRIVE_PASS = os.environ.get('APPDRIVE_PASS', '')
-if len(APPDRIVE_EMAIL) == 0 or len(APPDRIVE_PASS) == 0:
-    APPDRIVE_EMAIL = None
-    APPDRIVE_PASS = None
-
 GDTOT_CRYPT = os.environ.get('GDTOT_CRYPT', '')
 if len(GDTOT_CRYPT) == 0:
     GDTOT_CRYPT = None
@@ -190,6 +185,7 @@ for i in range(TELEGRAPH_ACCS):
     create_account(sname)
 LOGGER.info(f"Generated {TELEGRAPH_ACCS} telegraph tokens")
 
-updater = tg.Updater(token=BOT_TOKEN, use_context=True)
+tgDefaults = tg.Defaults(parse_mode='HTML', allow_sending_without_reply=True, disable_web_page_preview=True, run_async=True)
+updater = tg.Updater(token=BOT_TOKEN, defaults=tgDefaults, use_context=True)
 bot = updater.bot
 dispatcher = updater.dispatcher
